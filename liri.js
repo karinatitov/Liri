@@ -1,12 +1,13 @@
 require("dotenv").config();
-
+var keys = require("./keys.js");
 // Spotify npm
-// var Spotify = require("node-spotify-api");
-// var spotify = new Spotify(keys.spotify);
+var Spotify = require("node-spotify-api");
+var spotify = new Spotify(keys.spotify);
 
+console.log(spotify);
 
 // query libraries
-var keys = require("./keys.js");
+
 var fs = require("fs");
 var axios = require("axios");
 var moment = require("moment");
@@ -109,31 +110,41 @@ function movieThis(movie) {
 }
 
 function concertThis(artist) {
-    // var artist = artist.replace(/ /g, "+");
-    
+    var artist = artist.replace(/ /g, "+");
+    console.log(artist);
     axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp").then(
-        function(response) {
-            console.log(response);
-         //  console.log("" + response.data.imdbRating);
-        })
-        .catch(function(error) {
-          if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log("---------------Data---------------");
-            console.log(error.response.data);
-            console.log("---------------Status---------------");
-            console.log(error.response.status);
-            console.log("---------------Status---------------");
-            console.log(error.response.headers);
-          } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an object that comes back with details pertaining to the error that occurred.
-            console.log(error.request);
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log("Error", error.message);
-          }
-          console.log(error.config);
+            function (response) {
+                var list = response.data;
+                 // console.log(list);
+
+                for (var i = 0; i < list.length; i++) {
+                    console.log("---------------Venue---------------");
+                    console.log("Venue Name: " + list[i].venue.name);
+                    console.log("Location: " + list[i].venue.country + " " + list[i].venue.city);
+                    console.log("Venue Date: " + moment(list[i].datetime,"YYYY-MM-DD HH:mm A").format("MM/DD/YYYY hh:mm A"));
+                    console.log("------------------------------");
+                }
+                // console.log(response.data);
+                //  console.log("" + response.data.imdbRating);
+            })
+        .catch(function (error) {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log("---------------Data---------------");
+                console.log(error.response.data);
+                console.log("---------------Status---------------");
+                console.log(error.response.status);
+                console.log("---------------Status---------------");
+                console.log(error.response.headers);
+            } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an object that comes back with details pertaining to the error that occurred.
+                console.log(error.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log("Error", error.message);
+            }
+            console.log(error.config);
         });
 }
