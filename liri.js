@@ -34,6 +34,9 @@ switch (command) {
     case "do-what-it-says":
         doWhatItSays();
         break;
+    default: {
+        return console.log("Can't read the command " + command);
+    }
 }
 
 // function doWhatItSays(){
@@ -48,7 +51,35 @@ function spotifyThisSong(song) {
     if (!song) {
         song = "The Sign";
     }
+    spotify.search({ type: 'track', query: song}, function(error, data){
+        // console.log(error)
+        if(!error){
 
+          for(var i = 0; i < data.tracks.items.length; i++){
+            var songData = data.tracks.items[i];
+            //artist
+            console.log("Artist: " + songData.artists[0].name);
+
+            console.log(songData.artists[0].name);
+            //song name
+            console.log("Song: " + songData.name);
+            //spotify preview link
+            console.log("Preview URL: " + songData.preview_url);
+            //album name
+            console.log("Album: " + songData.album.name);
+            console.log("-----------------------");
+         // didnt work   
+            //adds text to log.txt
+            // fs.appendFile('log.txt', songData.artists[0].name);
+            // fs.appendFile('log.txt', songData.name);
+            // fs.appendFile('log.txt', songData.preview_url);
+            // fs.appendFile('log.txt', songData.album.name);
+            // fs.appendFile('log.txt', "-----------------------");
+          }
+        } else{
+          console.log('Error occurred.');
+        }
+      });
 }
 
 function movieThis(movie) {
