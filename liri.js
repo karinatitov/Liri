@@ -39,13 +39,34 @@ switch (command) {
     }
 }
 
-// function doWhatItSays(){
-//     fs.readFile("random.txt", "utf8", (error, data)) {
-//         if(error){
-//             console.log(error)
-//         }
-//     })
-// }
+function doWhatItSays(){
+    fs.readFile('random.txt', 'utf8', function (err, data) {
+        if (err) {
+            console.log('Error occurred: ' + err);
+            return;
+        } 
+        //splitting each string in the txt file by the comma
+        data = data.split(',');
+        var command = '';
+
+        //determining how to parse the data if there is more than one item
+        if (data.length === 2) { 
+            command = data[0];
+            song = data[1];
+        } else {
+            //using the data in the txt sheet as the command if only one value
+            command = data[0];
+        }
+        if (command === 'spotify-this-song') {
+            spotifyThisSong();   
+        } else {
+            //if the user entry isn't a valid command
+            console.log("Can't recognize the command");
+        }
+
+    });
+
+}
 
 function spotifyThisSong(song) {
     if (!song) {
