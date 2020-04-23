@@ -4,7 +4,6 @@ var keys = require("./keys.js");
 var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
 
-console.log(spotify);
 
 // query libraries
 
@@ -58,7 +57,7 @@ function doWhatItSays(){
             command = data[0];
         }
         if (command === 'spotify-this-song') {
-            spotifyThisSong();   
+            spotifyThisSong(song);   
         } else {
             //if the user entry isn't a valid command
             console.log("Can't recognize the command");
@@ -80,8 +79,6 @@ function spotifyThisSong(song) {
             var songData = data.tracks.items[i];
             //artist
             console.log("Artist: " + songData.artists[0].name);
-
-            console.log(songData.artists[0].name);
             //song name
             console.log("Song: " + songData.name);
             //spotify preview link
@@ -89,13 +86,6 @@ function spotifyThisSong(song) {
             //album name
             console.log("Album: " + songData.album.name);
             console.log("-----------------------");
-         // didnt work   
-            //adds text to log.txt
-            // fs.appendFile('log.txt', songData.artists[0].name);
-            // fs.appendFile('log.txt', songData.name);
-            // fs.appendFile('log.txt', songData.preview_url);
-            // fs.appendFile('log.txt', songData.album.name);
-            // fs.appendFile('log.txt', "-----------------------");
           }
         } else{
           console.log('Error occurred.');
@@ -105,20 +95,17 @@ function spotifyThisSong(song) {
 
 function movieThis(movie) {
 
-    // var movie = movie.replace(/ /g, "+");
-
     axios.get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy").then(
             function (response) {
-
-                //  console.log(response);
                 //  Title of the movie.
                 console.log("Title: " + response.data.Title);
+
                 //   * Year the movie came out.
                 console.log("Year: " + response.data.Year);
+
                 //   * IMDB Rating of the movie.
                 console.log("IMDB raiting: " + response.data.imdbRating);
-                //   * Rotten Tomatoes Rating of the movie.
-                //  console.log("Rotten Tomatoes Rating: " + response.data.tomatoRating);
+
                 //   * Country where the movie was produced.
                 console.log("Country: " + response.data.Country);
 
@@ -176,8 +163,6 @@ function concertThis(artist) {
                     console.log("Venue Date: " + moment(list[i].datetime,"YYYY-MM-DD HH:mm A").format("MM/DD/YYYY hh:mm A"));
                     console.log("------------------------------");
                 }
-                // console.log(response.data);
-                //  console.log("" + response.data.imdbRating);
             })
         .catch(function (error) {
             if (error.response) {
